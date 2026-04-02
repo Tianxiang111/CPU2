@@ -30,7 +30,7 @@ module top(clk,rst_n,ACC_out,dsig
     wire [7 :0] oMAR;
     wire [15:0] oMBR;
     wire [ 7:0] oPC;
-    wire [ 7:0] oBR;
+    wire [15:0] oBR;
     wire [15:0] iMBR;
     wire [ 7:0] oIR;
     wire [15:0] oACC;
