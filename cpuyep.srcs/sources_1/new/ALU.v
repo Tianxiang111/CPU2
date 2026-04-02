@@ -31,11 +31,12 @@
 `define opSL  4'b1011
 `define opBR  4'b1111
 `define opMBR 4'b1110 
-module ALU(clk,rst_n,ctl,oMBR,oACC,oALU,MR,DR
+module ALU(clk,rst_n,ctl,oMBR,oBR,oACC,oALU,MR,DR
     );
     input clk,rst_n;
     input [19:0] ctl;
     input [15:0] oMBR;
+    input [15:0] oBR;
     input [15:0] oACC;
     output reg [15:0] oALU;
     output reg [15:0] MR;
@@ -49,52 +50,24 @@ module ALU(clk,rst_n,ctl,oMBR,oACC,oALU,MR,DR
         else
         begin
             case (ctl[15:12])
-                `opADD: oALU <= oACC + oALU;
-                `opSUB: oALU <= oACC - oALU;
-                `opMPY: {MR,oALU} <= oACC * oALU;
-                `opDIV: 
-                begin
-                    oALU <= oACC / oALU;
-                    DR <= oACC % oALU;
-                end 
-                `opAND: oALU <= oACC&oALU;
-                `opOR : oALU <= oACC|oALU;
-                `opNOT: oALU <= ~oALU;
-                `opSRL: oALU <= oACC >> oALU;  
-                `opSLL: oALU <= oACC << oALU;
-                `opSR : oALU <= oACC >>> oALU;
-                `opSL : oALU <= oACC <<< oALU;
-                `opBR : oALU <= oMBR[7:0];
-                `opMBR: oALU <= oMBR[15:0];
-            endcase
-        end
-    end
-/*    always @(posedge clk)
-    begin
-        if (!rst_n)
-        begin
-            oALU <= 1'b0;
-        end
-        else
-        begin
-            case (ctl[15:12])
                 `opADD: oALU <= oACC + oBR;
                 `opSUB: oALU <= oACC - oBR;
                 `opMPY: {MR,oALU} <= oACC * oBR;
                 `opDIV: 
                 begin
-                    oALU <= oACC / oALU;
-                    DR <= oACC % oALU;
+                    oALU <= oACC / oBR;
+                    DR <= oACC % oBR;
                 end 
-                `opAND: oALU <= oACC&oBR;
-                `opOR : oALU <= oACC|oBR;
-                `opNOT: oALU <= ~oALU;
+                `opAND: oALU <= oACC & oBR;
+                `opOR : oALU <= oACC | oBR;
+                `opNOT: oALU <= ~oACC;
                 `opSRL: oALU <= oACC >> oBR;  
                 `opSLL: oALU <= oACC << oBR;
                 `opSR : oALU <= oACC >>> oBR;
                 `opSL : oALU <= oACC <<< oBR;
                 `opBR : oALU <= oBR;
+                `opMBR: oALU <= oMBR[15:0];
             endcase
         end
-    end*/
+    end
 endmodule
