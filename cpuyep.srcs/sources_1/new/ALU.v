@@ -61,10 +61,10 @@ module ALU(clk,rst_n,ctl,oMBR,oBR,oACC,oALU,MR,DR
                 `opAND: oALU <= oACC & oBR;
                 `opOR : oALU <= oACC | oBR;
                 `opNOT: oALU <= ~oACC;
-                `opSRL: oALU <= oACC >> oBR;  
-                `opSLL: oALU <= oACC << oBR;
-                `opSR : oALU <= oACC >>> oBR;
-                `opSL : oALU <= oACC <<< oBR;
+                `opSRL: oALU <= oACC >> 1;  
+                `opSLL: oALU <= oACC << 1;
+                `opSR : oALU <= oACC >>> 1;
+                `opSL : oALU <= oACC <<< 1;
                 `opBR : oALU <= oBR;
                 `opMBR: oALU <= oMBR[15:0];
             endcase
