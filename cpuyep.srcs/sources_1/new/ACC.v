@@ -38,14 +38,29 @@ module ACC(clk,rst_n,ctl,oMBR,oALU,flags,oACC
         else
         begin
             case (ctl[11:10])
-                2'b01: oACC <= oALU;
-                2'b10: oACC <= oMBR[7:0];
-                2'b11: oACC <= oMBR[15:0];
+                2'b01:
+                begin
+                    oACC <= oALU;
+                    flags <= oALU[15];
+                end
+                2'b10:
+                begin
+                    oACC <= oMBR[7:0];
+                    flags <= 1'b0;
+                end
+                2'b11:
+                begin
+                    oACC <= oMBR[15:0];
+                    flags <= oMBR[15];
+                end
+                default:
+                begin
+                    flags <= oACC[15];
+                end
             endcase
             //if (ctl[10]==1'b1) oACC <= oALU;
             //if (ctl[11]==1'b1) oACC <= oMBR[7:0];
             //if (ctl[19]==1'b1) oACC <= oMBR[15:0];
-            flags<=(oACC[15]==1)?1'b1:1'b0;
         end
     end
 endmodule
