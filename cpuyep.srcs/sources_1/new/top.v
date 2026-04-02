@@ -67,6 +67,7 @@ module top(clk,rst_n,ACC_out,dsig
         .rst_n(rst_n),
         .ctl(ctl),// use this to choose which instruction to use
         .oMBR(oMBR),
+        .oBR(oBR),
         .oACC(oACC),
         .oALU(oALU),
         .MR(MR),
