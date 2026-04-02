@@ -23,11 +23,11 @@
 `define op_LOAD 'h02
 `define op_ADD 'h03
 `define op_SUB 'h04
-`define op_MPY 'h05
-`define op_DIV 'h06
-`define op_JMP 'h07
-`define op_JMPGEZ 'h08
-`define op_HALT 'h09
+`define op_JMPGEZ 'h05
+`define op_JMP 'h06
+`define op_HALT 'h07
+`define op_MPY 'h08
+`define op_DIV 'h09
 `define op_AND 'h0A
 `define op_OR 'h0B
 `define op_NOT 'h0C
@@ -79,15 +79,15 @@ module CU(clk,rst_n,ctl,flags,oIR
                     `op_LOAD:   CAR <= 'h05;
                     `op_ADD:    CAR <= 'h0F;
                     `op_SUB:    CAR <= 'h13;
-                    `op_MPY:    CAR <= 'h17;
-                    `op_DIV:    CAR <= 'h1B;
-                    `op_JMP:    CAR <= 'h1F;
                     `op_JMPGEZ: // Jump when ACC >= 0 (flags==0 because flags marks negative ACC)
                     begin
                         if (!flags) CAR <= 'h1F;
                         else CAR <= 'h09;
                     end
+                    `op_JMP:    CAR <= 'h1F;
                     `op_HALT:   CAR <= 'h2B;
+                    `op_MPY:    CAR <= 'h17;
+                    `op_DIV:    CAR <= 'h1B;
                     `op_AND:    CAR <= 'h36;
                     `op_OR:     CAR <= 'h3A;
                     `op_NOT:    CAR <= 'h3E;
