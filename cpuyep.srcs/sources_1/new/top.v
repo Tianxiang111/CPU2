@@ -40,7 +40,7 @@ module top(clk,rst_n,ACC_out,dsig
     wire [15:0] dsignal;
     wire flags;
     assign ACC_out = oACC; 
-    assign dsignal = dsig;
+    assign dsig = dsignal;
     DISPLAY dut_DISPLAY(
         .clk(clk),
         .number(oACC),

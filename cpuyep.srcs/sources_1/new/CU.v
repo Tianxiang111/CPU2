@@ -82,7 +82,7 @@ module CU(clk,rst_n,ctl,flags,oIR
                     `op_JMPGEZ: // Jump when ACC >= 0 (flags==0 because flags marks negative ACC)
                     begin
                         if (!flags) CAR <= 'h1F;
-                        else CAR <= 'h09;
+                        else CAR <= 'h00;
                     end
                     `op_JMP:    CAR <= 'h1F;
                     `op_HALT:   CAR <= 'h2B;
