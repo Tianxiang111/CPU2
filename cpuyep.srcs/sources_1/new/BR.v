@@ -25,7 +25,7 @@ module BR(clk,rst_n,ctl,oMBR,oBR
     input clk,rst_n;
     input [19:0] ctl;
     input [15:0] oMBR;
-    output reg [7:0] oBR = 0;
+    output reg [15:0] oBR = 0;
     always @(posedge clk)
     begin
         if (!rst_n)
@@ -35,7 +35,7 @@ module BR(clk,rst_n,ctl,oMBR,oBR
         else
         begin
             case (ctl[7])
-                1'b1: oBR <= oMBR[7:0];
+                1'b1: oBR <= oMBR[15:0];
             endcase
         end
     end
