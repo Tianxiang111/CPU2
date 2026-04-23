@@ -31,16 +31,23 @@
 `define opSL  4'b1011
 `define opBR  4'b1111
 `define opMBR 4'b1110 
-module ALU(clk,rst_n,ctl,oMBR,oBR,oACC,oALU,MR,DR
+module ALU(clk,rst_n,ctl,oIR,oMBR,oBR,oACC,oALU,MR,DR
     );
     input clk,rst_n;
     input [19:0] ctl;
+    input [ 7:0] oIR;
     input [15:0] oMBR;
     input [15:0] oBR;
     input [15:0] oACC;
     output reg [15:0] oALU;
     output reg [15:0] MR;
     output reg [15:0] DR;
+    wire is_addr_mode;
+    wire [15:0] alu_rhs;
+    assign is_addr_mode = (oIR == 8'h13) || (oIR == 8'h14) || (oIR == 8'h15) || (oIR == 8'h16) ||
+                          (oIR == 8'h1A) || (oIR == 8'h1B) || (oIR == 8'h1C) || (oIR == 8'h1D) ||
+                          (oIR == 8'h1E) || (oIR == 8'h1F) || (oIR == 8'h20);
+    assign alu_rhs = is_addr_mode ? oMBR : {8'b0,oMBR[7:0]};
     always @(posedge clk)
     begin
         if (!rst_n)
@@ -50,16 +57,16 @@ module ALU(clk,rst_n,ctl,oMBR,oBR,oACC,oALU,MR,DR
         else
         begin
             case (ctl[15:12])
-                `opADD: oALU <= oACC + oBR;
-                `opSUB: oALU <= oACC - oBR;
-                `opMPY: {MR,oALU} <= oACC * oBR;
+                `opADD: oALU <= oACC + alu_rhs;
+                `opSUB: oALU <= oACC - alu_rhs;
+                `opMPY: {MR,oALU} <= oACC * alu_rhs;
                 `opDIV: 
                 begin
-                    oALU <= oACC / oBR;
-                    DR <= oACC % oBR;
+                    oALU <= oACC / alu_rhs;
+                    DR <= oACC % alu_rhs;
                 end 
-                `opAND: oALU <= oACC & oBR;
-                `opOR : oALU <= oACC | oBR;
+                `opAND: oALU <= oACC & alu_rhs;
+                `opOR : oALU <= oACC | alu_rhs;
                 `opNOT: oALU <= ~oACC;
                 `opSRL: oALU <= oACC >> 1;  
                 `opSLL: oALU <= oACC << 1;
